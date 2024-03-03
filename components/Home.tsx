@@ -15,7 +15,7 @@ import Colors from '@/constants/Colors';
 
 export interface Team {
   name: string,
-  points: number,
+  score: number,
   penalties: number
 }
 
@@ -24,11 +24,16 @@ export default function Home({ title, setTitle, scores, setScores }) {
   const [isRunning, setIsRunning] = useState(false); // State to track whether the timer is running
   const [placeholderVisible, setPlaceholderVisible] = useState(true);
 
-  // const [team1, setTeam1] = useState("");
-  // const [team2, setTeam2] = useState("");
-
-  const [team1, setTeam1] = useState<Team>({} as Team);
-  const [team2, setTeam2] = useState<Team>({} as Team);
+  const [team1, setTeam1] = useState<Team>({
+    name: '',
+    score: 0,
+    penalties: 0
+  });
+  const [team2, setTeam2] = useState<Team>({
+    name: '',
+    score: 0,
+    penalties: 0
+  });
 
   const [penaltyStates, setPenaltyStates] = useState([[false, false, false], [false, false, false]]);
   const [gameIsOver, setGameIsOver] = useState(false);
@@ -52,7 +57,6 @@ export default function Home({ title, setTitle, scores, setScores }) {
       const interval = setInterval(() => {
         setTime((prevTime) => prevTime - 1);
       }, 1000);
-      console.log(time);
 
       return () => clearInterval(interval);
     } else if (time === 0) {
@@ -61,12 +65,14 @@ export default function Home({ title, setTitle, scores, setScores }) {
   }, [time, isRunning]);
 
   if (gameIsOver) {
-    return <GameOver />; // Render the GameOver component instead of Home when the game is over
+    return <GameOver winningTeam={team1}/>; // Render the GameOver component instead of Home when the game is over
   }
   const formatTime = () => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     const totalTimeInSeconds = minutes * 60 + seconds;
+    console.log("team1", team1);
+    console.log("team2", team2);
 
     if (totalTimeInSeconds === 0) {
       return <GameOver winningTeam={team1}/>; // When time is exactly 0:00
@@ -82,14 +88,18 @@ export default function Home({ title, setTitle, scores, setScores }) {
     setIsRunning(prevState => !prevState); // Toggle the running state
   };
 
-  const updateScore = (index, action) => {
-    const newScores = [...scores];
+  const updateScore = (team: Team, action: string) => {
+    let newScore = team.score;
     if (action === 'increase') {
-      newScores[index]++;
-    } else if (action === 'decrease' && newScores[index] > 0) {
-      newScores[index]--;
+      newScore = ++team.score;
+    } else if (action === 'decrease') {
+      newScore = --team.score;
     }
-    setScores(newScores);
+    if (team === team1) {
+      setTeam1({...team1, score: newScore});
+    } else if (team === team2) {
+      setTeam2({...team2, score: newScore});
+    }
   };
 
   const handleImageClick = (teamIndex, logoIndex) => {
@@ -102,7 +112,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
   const renderPenaltyLogos = (i) => {
     const teamPenalties = penaltyStates[i]
-    console.log(`penaltyStates[${i}]:`, penaltyStates[i]);
+    //console.log(`penaltyStates[${i}]:`, penaltyStates[i]);
     return teamPenalties.map((isPenalty, index) => (
       <TouchableOpacity key={index} style={styles.penaltyButton} onPress={() => handleImageClick(i, index)}>
         <Image
@@ -186,11 +196,11 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
           <View style={styles.pointsContainer}>
             <View style={styles.score}>
-              <TouchableOpacity onPress={() => updateScore(0, 'increase')} style={styles.arrowButton}>
+              <TouchableOpacity onPress={() => updateScore(team1, 'increase')} style={styles.arrowButton}>
                 <FontAwesome name="chevron-up" size={24} color={Colors.blue} />
               </TouchableOpacity>
-                <Text style={styles.scoreText}>{scores[0]}</Text>
-              <TouchableOpacity onPress={() => updateScore(0, 'decrease')} style={styles.arrowButton}>
+                <Text style={styles.scoreText}>{team1.score}</Text>
+              <TouchableOpacity onPress={() => updateScore(team1, 'decrease')} style={styles.arrowButton}>
                 <FontAwesome name="chevron-down" size={24} color={Colors.blue} />
               </TouchableOpacity>
             </View>
@@ -215,11 +225,11 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
           <View style={styles.pointsContainer}>
             <View style={styles.score}>
-              <TouchableOpacity onPress={() => updateScore(1, 'increase')} style={styles.arrowButton}>
+              <TouchableOpacity onPress={() => updateScore(team2, 'increase')} style={styles.arrowButton}>
                 <FontAwesome name="chevron-up" size={24} color={Colors.blue} />
               </TouchableOpacity>
-              <Text style={styles.scoreText}>{scores[1]}</Text>
-              <TouchableOpacity onPress={() => updateScore(1, 'decrease')} style={styles.arrowButton}>
+              <Text style={styles.scoreText}>{team2.score}</Text>
+              <TouchableOpacity onPress={() => updateScore(team2, 'decrease')} style={styles.arrowButton}>
                 <FontAwesome name="chevron-down" size={24} color={Colors.blue} />
               </TouchableOpacity>
             </View>
