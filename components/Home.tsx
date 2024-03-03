@@ -20,12 +20,16 @@ export interface Team {
 }
 
 export default function Home({ title, setTitle, scores, setScores }) {
-  const [time, setTime] = useState(0 * 60); // 50 minutes in seconds
+  const [time, setTime] = useState(50 * 60); // 50 minutes in seconds
   const [isRunning, setIsRunning] = useState(false); // State to track whether the timer is running
   const [placeholderVisible, setPlaceholderVisible] = useState(true);
-  const [team1, setTeam1] = useState("");
-  const [team2, setTeam2] = useState("");
-  //const [isPenalty, setIsPenalty] = useState(false);
+
+  // const [team1, setTeam1] = useState("");
+  // const [team2, setTeam2] = useState("");
+
+  const [team1, setTeam1] = useState<Team>({} as Team);
+  const [team2, setTeam2] = useState<Team>({} as Team);
+
   const [penaltyStates, setPenaltyStates] = useState([[false, false, false], [false, false, false]]);
   const [gameIsOver, setGameIsOver] = useState(false);
   //HANDLING SESSION DATA
@@ -63,6 +67,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     const totalTimeInSeconds = minutes * 60 + seconds;
+
     if (totalTimeInSeconds === 0) {
       return <GameOver winningTeam={team1}/>; // When time is exactly 0:00
     } else if (totalTimeInSeconds > 30) {
@@ -253,12 +258,12 @@ export default function Home({ title, setTitle, scores, setScores }) {
         <View style={styles.teamNamesContainer}>
           <TextInput
             style={styles.teamName}
-            onChangeText={setTeam1}
-            value={team1}
+            onChangeText={(name)=>setTeam1({...team1, name})}
+            value={team1.name}
             placeholder={placeholderVisible ? "Equipe 1" : ''}
             onFocus={() => setPlaceholderVisible(false)}
             onBlur={() => {
-              if (!title) {
+              if (!team1.name) {
                 setPlaceholderVisible(true);
               }}}
             multiline
@@ -267,12 +272,12 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
           <TextInput
               style={styles.teamName}
-              onChangeText={setTeam2}
-              value={team2}
+              onChangeText={(name)=>setTeam2({...team2, name})}
+              value={team2.name}
               placeholder={placeholderVisible ? "Equipe 2" : ''}
               onFocus={() => setPlaceholderVisible(false)}
               onBlur={() => {
-                if (!title) {
+                if (!team2.name) {
                   setPlaceholderVisible(true);
                 }}}
               multiline
