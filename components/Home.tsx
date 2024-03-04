@@ -16,7 +16,7 @@ import Colors from '@/constants/Colors';
 export interface Team {
   name: string,
   score: number,
-  penalties: number
+  penalties: boolean[]
 }
 
 export default function Home({ title, setTitle, scores, setScores }) {
@@ -27,15 +27,15 @@ export default function Home({ title, setTitle, scores, setScores }) {
   const [team1, setTeam1] = useState<Team>({
     name: '',
     score: 0,
-    penalties: 0
+    penalties: [false, false, false]
   });
   const [team2, setTeam2] = useState<Team>({
     name: '',
     score: 0,
-    penalties: 0
+    penalties: [false, false, false]
   });
 
-  const [penaltyStates, setPenaltyStates] = useState([[false, false, false], [false, false, false]]);
+  //const [penaltyStates, setPenaltyStates] = useState([[false, false, false], [false, false, false]]);
   const [gameIsOver, setGameIsOver] = useState(false);
   //HANDLING SESSION DATA
   // async function save(key, value) {
@@ -102,19 +102,31 @@ export default function Home({ title, setTitle, scores, setScores }) {
     }
   };
 
-  const handleImageClick = (teamIndex, logoIndex) => {
-    setPenaltyStates(prevStates => {
-      const newStates = [...prevStates]; // Create a copy of penaltyStates
-      newStates[teamIndex][logoIndex] = !newStates[teamIndex][logoIndex]; // Toggle the state of the clicked logo
-      return newStates; // Return the updated penaltyStates
-    });
+  const handleImageClick = (team: Team, logoIndex: number) => {
+    //setTeam1({...team, penalties: penalties[logoIndex]: true})
+    if (team === team1) {
+      const newPenalties = team1.penalties.map((penalty, index) => // create new array with the updated penalty status
+        index === logoIndex ? !penalty : penalty // toggle penalty status at given index
+      );
+      setTeam1(prevTeam => ({ ...prevTeam, penalties: newPenalties }));// update team with the new penalties array
+    } else if (team === team2) {
+      const newPenalties = team2.penalties.map((penalty, index) =>
+        index === logoIndex ? !penalty : penalty
+      );
+      setTeam2(prevTeam => ({ ...prevTeam, penalties: newPenalties }));
+    }
+    // setPenaltyStates(prevStates => {
+    //   const newStates = [...prevStates]; // Create a copy of penaltyStates
+    //   newStates[teamIndex][logoIndex] = !newStates[teamIndex][logoIndex]; // Toggle the state of the clicked logo
+    //   return newStates; // Return the updated penaltyStates
+    // });
   };
 
-  const renderPenaltyLogos = (i) => {
-    const teamPenalties = penaltyStates[i]
+  const renderPenaltyLogos = (team:Team) => {
+    const teamPenalties = team.penalties
     //console.log(`penaltyStates[${i}]:`, penaltyStates[i]);
     return teamPenalties.map((isPenalty, index) => (
-      <TouchableOpacity key={index} style={styles.penaltyButton} onPress={() => handleImageClick(i, index)}>
+      <TouchableOpacity key={index} style={styles.penaltyButton} onPress={() => handleImageClick(team, index)}>
         <Image
           style={styles.penaltyLogo}
           source={isPenalty ? penaltyYes : penaltyNo}
@@ -170,7 +182,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
         <View style={styles.scoreContainer}>
 
           <View style={styles.penaltyContainer}>
-            {renderPenaltyLogos(0)}
+            {renderPenaltyLogos(team1)}
             {/* <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
                 <Image
                 style={styles.penaltyLogo}
@@ -236,7 +248,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
           </View>
 
           <View style={styles.penaltyContainer}>
-            {renderPenaltyLogos(1)}
+            {renderPenaltyLogos(team2)}
             {/* <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
                 <Image
                 style={styles.penaltyLogo}
