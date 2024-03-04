@@ -103,7 +103,6 @@ export default function Home({ title, setTitle, scores, setScores }) {
   };
 
   const handleImageClick = (team: Team, logoIndex: number) => {
-    //setTeam1({...team, penalties: penalties[logoIndex]: true})
     if (team === team1) {
       const newPenalties = team1.penalties.map((penalty, index) => // create new array with the updated penalty status
         index === logoIndex ? !penalty : penalty // toggle penalty status at given index
@@ -192,27 +191,6 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
           <View style={styles.penaltyContainer}>
             {renderPenaltyLogos(team1)}
-            {/* <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity> */}
           </View>
 
           <View style={styles.pointsContainer}>
@@ -258,27 +236,6 @@ export default function Home({ title, setTitle, scores, setScores }) {
 
           <View style={styles.penaltyContainer}>
             {renderPenaltyLogos(team2)}
-            {/* <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.penaltyButton} onPress={handleImageClick}>
-                <Image
-                style={styles.penaltyLogo}
-                source={isPenalty ? penaltyYes : penaltyNo}
-                resizeMode="contain"
-                />
-              </TouchableOpacity> */}
           </View>
 
         </View>
@@ -326,18 +283,13 @@ const styles = StyleSheet.create({
     height: '100vh',
   },
   logoContainer: {
-    //paddingTop: 5,
     height: '40%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.blue,
-    //border: '1px solid Yellow',
-    //objectFit: 'contain',
-    // zIndex: 1000,
   },
   logo: {
     maxHeight: '100%',
-    //width: '100%',
   },
   titleContainer: {
     height: '10%',
@@ -357,27 +309,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    //flexDirection: 'column',
     width: '20%',
-    //aspectRatio: 1,
     height: '100%',
-    //marginBottom: '5vh',
     flex: 1,
-    //position: 'relative', // Ensure container is positioned relatively
-    //zIndex: 0,
-    //padding: 10,
     // border: '1px solid yellow',
   },
   playIconContainer: {
     flex: 0.7,
-    //justifyContent: 'flex-start',
     alignItems: 'center',
-    //height: '70%',
     maxWidth: '100%',
-    //aspectRatio: 1,
-    // border: '1px solid white',
-    //objectFit: 'cover',
-    //marginLeft: '0'
   },
   playIcon: {
     // border: '1px solid green',
@@ -385,7 +325,6 @@ const styles = StyleSheet.create({
     height: '100%',
     aspectRatio: 1,
     opacity: 0.5,
-    // maxHeight: '60%',
   },
   time: {
     flex: 0.3,
@@ -393,7 +332,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30,
     opacity: 0.5,
-    //zIndex: 1
   },
   bottomContainer: {
     flexDirection: 'row',
@@ -403,7 +341,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     // border: "1px solid red",
     paddingHorizontal: 'auto'
-    //zIndex: 1000,
   },
   scoreContainer: {
     flexDirection: 'row',
@@ -414,29 +351,25 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
   },
   pointsContainer: {
-    //flexDirection: 'row',
     justifyContent: 'space-between',
     height: '100%',
     aspectRatio: 1,
-    //maxWidth: "70%",
-    //paddingRight: 0,
     backgroundColor: Colors.blue,
     //border: '2px solid red',
-    //zIndex: 100,
   },
   score: {
-    height: '100%', // Adjust the height as necessary
-    aspectRatio: 1, // This ensures the width is always equal to the height, making it a circle
-    justifyContent: 'center', // Centers children vertically within the circle
-    alignItems: 'center', // Centers children horizontally within the circle
+    height: '100%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: '50%', // This large borderRadius value effectively makes the element a circle
-    borderWidth: 2, // Optional: adds a border to the circle for visual clarity
-    borderColor: 'transparent', // Adjust the border color as needed
+    borderRadius: '50%',
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
   scoreText: {
     color: Colors.blue,
-    fontSize: 50, // Adjust font size as needed for the circle size
+    fontSize: 50,
     fontWeight: 'bold',
   },
   arrowButton: {
@@ -444,7 +377,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    //zIndex: 1000,
   },
   penaltyContainer:{
     backgroundColor: Colors.blue,
@@ -452,10 +384,8 @@ const styles = StyleSheet.create({
     width: "30%",
     //border: '1px solid green',
     justifyContent: 'space-evenly',
-    //alignItems: 'center',
   },
   penaltyButton: {
-    //position: 'absolute',
     zIndex: 1,
     width: '100%',
     height: '33%',
@@ -470,7 +400,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     height: '20%',
     flexDirection: 'row',
-    //alignItems: 'center',
   },
   teamName1:{
     color: "white",
@@ -483,13 +412,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 60,
-    // maxWidth: "50%",
     // border: '1px solid yellow',
     textAlign: 'right',
   },
   teamsNamesMargin: {
-    //flex: 1,
-    //width: '25%',
     backgroundColor: Colors.blue
   }
 });
