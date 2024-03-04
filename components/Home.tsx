@@ -108,18 +108,27 @@ export default function Home({ title, setTitle, scores, setScores }) {
       const newPenalties = team1.penalties.map((penalty, index) => // create new array with the updated penalty status
         index === logoIndex ? !penalty : penalty // toggle penalty status at given index
       );
-      setTeam1(prevTeam => ({ ...prevTeam, penalties: newPenalties }));// update team with the new penalties array
+      const allTrue = newPenalties.every(penalty => penalty === true);
+      if (allTrue) {
+        const finalPenalties = newPenalties.map(() => false);
+        setTeam1({ ...team1, penalties: finalPenalties });
+        updateScore(team2, 'increase');
+      } else {
+        setTeam1({ ...team1, penalties: newPenalties });
+      }
     } else if (team === team2) {
       const newPenalties = team2.penalties.map((penalty, index) =>
         index === logoIndex ? !penalty : penalty
       );
-      setTeam2(prevTeam => ({ ...prevTeam, penalties: newPenalties }));
+      const allTrue = newPenalties.every(penalty => penalty === true);
+      if (allTrue) {
+        const finalPenalties = newPenalties.map(() => false);
+        setTeam2({ ...team2, penalties: finalPenalties });
+        updateScore(team1, 'increase');
+      } else {
+        setTeam2({ ...team2, penalties: newPenalties });
+      }
     }
-    // setPenaltyStates(prevStates => {
-    //   const newStates = [...prevStates]; // Create a copy of penaltyStates
-    //   newStates[teamIndex][logoIndex] = !newStates[teamIndex][logoIndex]; // Toggle the state of the clicked logo
-    //   return newStates; // Return the updated penaltyStates
-    // });
   };
 
   const renderPenaltyLogos = (team:Team) => {
@@ -279,7 +288,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
 {/* TEAMNAMES CONTAINER BEGIN */}
         <View style={styles.teamNamesContainer}>
           <TextInput
-            style={styles.teamName}
+            style={styles.teamName1}
             onChangeText={(name)=>setTeam1({...team1, name})}
             value={team1.name}
             placeholder={placeholderVisible ? "Equipe 1" : ''}
@@ -293,7 +302,7 @@ export default function Home({ title, setTitle, scores, setScores }) {
           <View style={styles.teamsNamesMargin}></View>
 
           <TextInput
-              style={styles.teamName}
+              style={styles.teamName2}
               onChangeText={(name)=>setTeam2({...team2, name})}
               value={team2.name}
               placeholder={placeholderVisible ? "Equipe 2" : ''}
@@ -357,7 +366,7 @@ const styles = StyleSheet.create({
     //position: 'relative', // Ensure container is positioned relatively
     //zIndex: 0,
     //padding: 10,
-    border: '1px solid yellow',
+    // border: '1px solid yellow',
   },
   playIconContainer: {
     flex: 0.7,
@@ -366,12 +375,12 @@ const styles = StyleSheet.create({
     //height: '70%',
     maxWidth: '100%',
     //aspectRatio: 1,
-    border: '1px solid white',
+    // border: '1px solid white',
     //objectFit: 'cover',
     //marginLeft: '0'
   },
   playIcon: {
-    border: '1px solid green',
+    // border: '1px solid green',
     width: '60%',
     height: '100%',
     aspectRatio: 1,
@@ -392,7 +401,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '30%',
     backgroundColor: Colors.blue,
-    border: "1px solid red",
+    // border: "1px solid red",
     paddingHorizontal: 'auto'
     //zIndex: 1000,
   },
@@ -463,11 +472,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     //alignItems: 'center',
   },
-  teamName:{
+  teamName1:{
     color: "white",
     fontWeight: "bold",
     fontSize: 60,
     maxWidth: "50%",
+    // border: '1px solid yellow'
+  },
+  teamName2:{
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 60,
+    // maxWidth: "50%",
+    // border: '1px solid yellow',
+    textAlign: 'right',
   },
   teamsNamesMargin: {
     //flex: 1,
